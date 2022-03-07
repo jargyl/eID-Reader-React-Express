@@ -1,4 +1,7 @@
 # eID Reader
+## Requirements
+Install eID Software from [eID Belgium](https://eid.belgium.be/nl).
+
 ## Installation
 
 ### Start API
@@ -12,8 +15,7 @@
 3. npm start
 
 ## Read eID
-1. Install eID Software from [eID Belgium](https://eid.belgium.be/nl).
-2. Connect card reader to your PC.
-3. Insert eID in card reader.
-4. Navigate to [http://localhost:3000/](http://localhost:3000/).
-5. Card details will show up on the page.
+1. Connect card reader to your PC.
+2. Insert eID in card reader.
+3. Navigate to [http://localhost:3000/](http://localhost:3000/).
+4. Card details will show up on the page.
