@@ -10,7 +10,7 @@
 2. npm install
 3. npm start
 
-### Read eID
+## Read eID
 1. Connect card reader to your PC
 2. Insert eID in card reader
 3. Navigate to [http://localhost:3000/](http://localhost:3000/)
