@@ -34,12 +34,28 @@ class App extends Component {
     }
   }
 
+  getDocumentType() {
+    const documentType = this.state.cardData.documentType;
+    if (this.state.cardData) {
+      if (documentType === "01") {
+        return "Identiteitskaart";
+      } else if (documentType === "06") {
+        return "Kids-ID";
+      } else if (documentType !== "07" && documentType !== "08") {
+        return "Vreemdelingenkaart";
+      } else {
+        return "Onbekend";
+      }
+    }
+  }
+
   render() {
     const { dataIsLoaded, cardData, picture, message } = this.state;
     if (!dataIsLoaded) return <h1>Loading...</h1>;
     if (message) return <h2>{message}</h2>;
     return (
       <div className="App">
+        <p>Document Type: {this.getDocumentType()}</p>
         <p>Name: {cardData.name}</p>
         <p>Sex: {cardData.sex}</p>
         <p>Date of Birth: {cardData.dateOfBirth}</p>
