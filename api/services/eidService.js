@@ -14,7 +14,7 @@ module.exports.getCardData = async function () {
       const nationalNumber = cardReader.GetNationalNumber();
       const locationOfBirth = cardReader.GetLocationOfBirth();
       const imageFile = cardReader.GetPhotoFile();
-      const documentType = cardReader.GetDocumentType();
+      const documentType = cardReader.GetData("document_type");
       const data = {
         name: name,
         sex: sex,
