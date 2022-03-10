@@ -8,4 +8,9 @@ router.get("/", async function (req, res, next) {
   res.send(cardData);
 });
 
+router.get("/pin", async function (req, res, next) {
+  const verified = await eidService.RequirePin();
+  res.send(verified);
+});
+
 module.exports = router;

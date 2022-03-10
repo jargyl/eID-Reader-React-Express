@@ -42,3 +42,26 @@ module.exports.getCardData = async function () {
     cardReader.Finalize();
   }
 };
+
+module.exports.RequirePin = async function () {
+  const cardReader = new CardReader("beidpkcs11.dll");
+  try {
+    const testdata = Buffer.from(["0", "1", "2", "3", "4", "5", "6", "7", "8"]);
+    if (cardReader.HasCard()) {
+      try {
+        cardReader.EncrypteData(testdata);
+        return true;
+      } catch (error) {
+        return false;
+      }
+    } else {
+      return {
+        message: "No card detected",
+      };
+    }
+  } catch (e) {
+    console.error(e);
+  } finally {
+    cardReader.Finalize();
+  }
+};
