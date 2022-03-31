@@ -2,11 +2,20 @@ const CardReader = require("eid-lib");
 
 module.exports.getCardData = async function () {
   const cardReader = new CardReader("beidpkcs11.dll");
+  const result = { data: {}, status: "" };
   try {
     if (cardReader.HasCard()) {
-      const name = cardReader.GetFullName();
+      const firstName = cardReader.GetFirstName();
+      const lastName = cardReader.GetSurname();
       const sex = cardReader.GetGender();
-      const dateOfBirth = cardReader.GetDateOfBirth();
+      let dateOfBirth = cardReader.GetDateOfBirth();
+      if (dateOfBirth.includes("MRT")) {
+        dateOfBirth = dateOfBirth.replace("MRT", "MAR");
+      } else if (dateOfBirth.includes("MEI")) {
+        dateOfBirth = dateOfBirth.replace("MEI", "MAY");
+      } else if (dateOfBirth.includes("OKT")) {
+        dateOfBirth = dateOfBirth.replace("OKT", "OCT");
+      }
       const street = cardReader.GetStreetAndNumber();
       const zipcode = cardReader.GetAddressZip();
       const city = cardReader.GetAddressMunicipality();
@@ -14,9 +23,13 @@ module.exports.getCardData = async function () {
       const nationalNumber = cardReader.GetNationalNumber();
       const locationOfBirth = cardReader.GetLocationOfBirth();
       const imageFile = cardReader.GetPhotoFile();
+      const base64String = btoa(
+        String.fromCharCode(...new Uint8Array(imageFile))
+      );
       const documentType = cardReader.GetData("document_type");
-      const data = {
-        name: name,
+      result.data = {
+        firstName: firstName,
+        lastName: lastName,
         sex: sex,
         dateOfBirth: dateOfBirth,
         street: street,
@@ -25,16 +38,17 @@ module.exports.getCardData = async function () {
         country: country,
         nationalNumber: nationalNumber,
         locationOfBirth: locationOfBirth,
-        imageFile: imageFile,
+        imageFile: base64String,
         documentType: documentType,
       };
+      result.status = "success";
 
-      console.log("DATA: " + data);
-      return data;
+      console.log("DATA: " + result);
+      return result;
     } else {
-      return {
-        message: "No card detected",
-      };
+      result.data = "No card detected";
+      result.status = "failed";
+      return result;
     }
   } catch (e) {
     console.error(e);

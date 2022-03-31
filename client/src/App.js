@@ -65,7 +65,9 @@ class App extends Component {
     if (message) return <h2>{message}</h2>;
     return (
       <div className="App">
-        <p>Document Type: {this.getDocumentType()}</p>
+        <p>
+          Document Type: <strong>{this.getDocumentType()}</strong>
+        </p>
         <p>Name: {cardData.name}</p>
         <p>Sex: {cardData.sex}</p>
         <p>Date of Birth: {cardData.dateOfBirth}</p>
