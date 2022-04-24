@@ -6,9 +6,9 @@ class App extends Component {
     super(props);
     this.state = {
       dataIsLoaded: false,
+      status: "failed",
       cardData: [],
       picture: "",
-      message: "",
       verified: false,
     };
   }
@@ -18,21 +18,13 @@ class App extends Component {
       .then((res) => res.json())
       .then((json) => {
         this.setState({
-          cardData: json,
+          status: json.status,
+          cardData: json.data,
           dataIsLoaded: true,
-          message: json.message,
         });
+        console.log(this.state.cardData);
       })
       .catch((err) => err);
-
-    if (this.state.message == null) {
-      const base64String = btoa(
-        String.fromCharCode(
-          ...new Uint8Array(this.state.cardData.imageFile.data)
-        )
-      );
-      this.setState({ picture: base64String });
-    }
   }
 
   getDocumentType() {
@@ -60,15 +52,15 @@ class App extends Component {
   }
 
   render() {
-    const { dataIsLoaded, cardData, picture, message } = this.state;
+    const { dataIsLoaded, status, cardData, picture } = this.state;
     if (!dataIsLoaded) return <h1>Loading...</h1>;
-    if (message) return <h2>{message}</h2>;
+    if (status === "failed") return <h2>{cardData}</h2>;
     return (
       <div className="App">
         <p>
           Document Type: <strong>{this.getDocumentType()}</strong>
         </p>
-        <p>Name: {cardData.name}</p>
+        <p>Name: {cardData.firstName + " " + cardData.lastName}</p>
         <p>Sex: {cardData.sex}</p>
         <p>Date of Birth: {cardData.dateOfBirth}</p>
         <p>Street + No.: {cardData.street}</p>
@@ -77,7 +69,10 @@ class App extends Component {
         <p>Country: {cardData.country}</p>
         <p>National Number: {cardData.nationalNumber}</p>
         <p>Location of Birth: {cardData.locationOfBirth}</p>
-        <img alt="profile" src={`data:image/png;base64,${picture}`} />
+        <img
+          alt="profile"
+          src={`data:image/png;base64,${cardData.imageFile}`}
+        />
         <hr></hr>
         <button onClick={() => this.verifyPin()}>Verify PIN</button>
         <p>VERIFIED: {this.state.verified.toString().toUpperCase()}</p>
